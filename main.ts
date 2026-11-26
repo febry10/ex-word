@@ -18,13 +18,8 @@ import * as path from "node:path";
 const ENTRY = "Exhausting";
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
-fs.mkdirSync(outDir, { recursive: true, mode: 0o755 });
+fs.mkdirSync(outDir, { recursive: true });
 const outPath = path.join(outDir, "entry.txt");
-fs.writeFileSync(outPath, ENTRY, { encoding: "utf8", mode: 0o644 });
-// mkdir/write modes are masked by the process umask, so pin them explicitly:
-// the gate reads the file as another user in some harnesses, and 0644/0755
-// is the contract this entry promises.
-fs.chmodSync(outDir, 0o755);
-fs.chmodSync(outPath, 0o644);
+fs.writeFileSync(outPath, ENTRY, { encoding: "utf8" });
 process.stdout.write(ENTRY + "\n");
 process.exit(0);
